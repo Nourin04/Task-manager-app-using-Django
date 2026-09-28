@@ -7,6 +7,7 @@ from .models import Task
 from .serializers import TaskSerializer
 
 from rest_framework.views import APIView
+from rest_framework import generics
 
 def hello(request):
     return JsonResponse({
@@ -221,3 +222,12 @@ class TaskListAPIView(APIView):
             serializer.errors,
             status=400
         )
+
+################ generics ################
+class TaskListGenericAPIView(generics.ListCreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+class TaskDetailGenericAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer

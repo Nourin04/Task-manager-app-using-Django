@@ -16,7 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from tasks.views import hello, task_list, task_list_api, task_detail_api, TaskDetailAPIView, TaskListAPIView
+from tasks.views import hello, task_list, task_list_api, task_detail_api, TaskDetailAPIView, TaskListAPIView, TaskListGenericAPIView, TaskDetailGenericAPIView
+
 
 
 
@@ -28,4 +29,6 @@ urlpatterns = [
     path('api/tasks/<int:task_id>/', task_detail_api),
     path('api/tasks-class/<int:task_id>/', TaskDetailAPIView.as_view()),
     path('api/tasks-class/', TaskListAPIView.as_view()),
+    path('api/tasks-generic/', TaskListGenericAPIView.as_view()),
+    path('api/tasks-generic/<int:pk>/',TaskDetailGenericAPIView.as_view()),
 ]
