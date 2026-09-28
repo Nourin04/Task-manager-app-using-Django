@@ -16,10 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from tasks.views import hello, task_list, task_list_api, task_detail_api, TaskDetailAPIView, TaskListAPIView, TaskListGenericAPIView, TaskDetailGenericAPIView
+from tasks.views import hello, task_list, task_list_api, task_detail_api, TaskDetailAPIView, TaskListAPIView, TaskListGenericAPIView, TaskDetailGenericAPIView, TaskViewSet
+from rest_framework.routers import DefaultRouter
 
-
-
+router = DefaultRouter()
+router.register('tasks-viewset', TaskViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,3 +33,4 @@ urlpatterns = [
     path('api/tasks-generic/', TaskListGenericAPIView.as_view()),
     path('api/tasks-generic/<int:pk>/',TaskDetailGenericAPIView.as_view()),
 ]
+urlpatterns += router.urls
