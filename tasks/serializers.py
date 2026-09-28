@@ -3,6 +3,33 @@ from .models import Task
 
 
 class TaskSerializer(serializers.ModelSerializer):
+
+    def validate_title(self, value):
+        if len(value) < 5:
+            raise serializers.ValidationError(
+                "Title must be at least 5 characters long."
+            )
+
+        return value
+
+    def validate(self, data):
+        completed = data.get(
+            'completed',
+            self.instance.completed if self.instance else False
+        )
+
+        description = data.get(
+            'description',
+            self.instance.description if self.instance else ''
+        )
+
+        if completed and len(description) < 10:
+            raise serializers.ValidationError(
+                "Completed tasks must have a description of at least 10 characters."
+            )
+
+        return data
+
     class Meta:
         model = Task
         fields = ['id', 'title', 'description', 'completed']
