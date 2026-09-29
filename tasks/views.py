@@ -9,6 +9,7 @@ from .serializers import TaskSerializer
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import viewsets
+from .permissions import IsOwner
 
 def hello(request):
     return JsonResponse({
@@ -235,5 +236,11 @@ class TaskDetailGenericAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 ################### ViewSets ###############
 class TaskViewSet(viewsets.ModelViewSet):
-    queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    permission_classes = [IsOwner]
+
+    def get_queryset(self):
+        return Task.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)

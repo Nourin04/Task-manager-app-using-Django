@@ -20,7 +20,7 @@ from tasks.views import hello, task_list, task_list_api, task_detail_api, TaskDe
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('tasks-viewset', TaskViewSet)
+router.register('tasks-viewset', TaskViewSet, basename='task')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
