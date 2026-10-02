@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from tasks.views import hello, task_list, task_list_api, task_detail_api, TaskDetailAPIView, TaskListAPIView, TaskListGenericAPIView, TaskDetailGenericAPIView, TaskViewSet
 from rest_framework.routers import DefaultRouter
+from tasks.views import register_user, login_user
 
 router = DefaultRouter()
 router.register('tasks-viewset', TaskViewSet, basename='task')
@@ -32,5 +33,7 @@ urlpatterns = [
     path('api/tasks-class/', TaskListAPIView.as_view()),
     path('api/tasks-generic/', TaskListGenericAPIView.as_view()),
     path('api/tasks-generic/<int:pk>/',TaskDetailGenericAPIView.as_view()),
+    path('api/register/', register_user),
+    path('api/login/', login_user),
 ]
 urlpatterns += router.urls
