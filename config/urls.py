@@ -14,11 +14,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path
-from tasks.views import hello, task_list, task_list_api, task_detail_api, TaskDetailAPIView, TaskListAPIView, TaskListGenericAPIView, TaskDetailGenericAPIView, TaskViewSet
 from rest_framework.routers import DefaultRouter
-from tasks.views import register_user, login_user
+
+from tasks.views import (
+    hello,
+    register_user,
+    login_user,
+    TaskViewSet,
+)
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+)
 
 router = DefaultRouter()
 router.register('tasks-viewset', TaskViewSet, basename='task')
@@ -26,14 +36,14 @@ router.register('tasks-viewset', TaskViewSet, basename='task')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/', hello),
-    path('api/tasks/', task_list),
-    path('api/tasks-drftest/', task_list_api),
-    path('api/tasks/<int:task_id>/', task_detail_api),
-    path('api/tasks-class/<int:task_id>/', TaskDetailAPIView.as_view()),
-    path('api/tasks-class/', TaskListAPIView.as_view()),
-    path('api/tasks-generic/', TaskListGenericAPIView.as_view()),
-    path('api/tasks-generic/<int:pk>/',TaskDetailGenericAPIView.as_view()),
     path('api/register/', register_user),
     path('api/login/', login_user),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+path(
+    'api/docs/',
+    SpectacularSwaggerView.as_view(url_name='schema'),
+    name='swagger-ui',
+),
 ]
+
 urlpatterns += router.urls
