@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import viewsets
 from .permissions import IsOwner
+from rest_framework.permissions import IsAuthenticated
 
 from rest_framework import status
 
@@ -312,7 +313,7 @@ def login_user(request):
 
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
-    permission_classes = [IsOwner]
+    permission_classes = [IsAuthenticated,IsOwner]
 
     filterset_fields = ['completed']
     search_fields = ['title', 'description']
