@@ -306,3 +306,21 @@ def login_user(request):
         {"error": "Invalid username or password"},
         status=status.HTTP_401_UNAUTHORIZED
     )
+
+################# FILTERING, SEARCH, ORDERING #################
+
+
+class TaskViewSet(viewsets.ModelViewSet):
+    serializer_class = TaskSerializer
+    permission_classes = [IsOwner]
+
+    filterset_fields = ['completed']
+    search_fields = ['title', 'description']
+    ordering_fields = ['id', 'title', 'completed']
+    ordering = ['id']
+
+    def get_queryset(self):
+        return Task.objects.filter(owner=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
